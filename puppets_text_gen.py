@@ -108,5 +108,5 @@ class TextGenerator:
 
 if __name__ == "__main__":
     text_gen = TextGenerator()
-    #text_gen.train("Minh_responses.txt", "minh_50", epochs= 10, start_from="minh")
-    text_gen.test("minh_50", "Puppets also have often been asked to say things or show things otherwise not permitted; it is a theatrical mode whose words and actions are more able to slip under the radar of official censorship, something too trivial to be taken quite seriously by the authorities (though in practice puppet theater could be just as subject to restriction as the theater of human actors)", "Minh_responses.txt")
+    #text_gen.train("Rebecca_responses.txt", "rebecca_40", epochs= 40)
+    text_gen.test("rebecca_40", "Puppets also have often been asked to say things or show things otherwise not permitted; it is a theatrical mode whose words and actions are more able to slip under the radar of official censorship, something too trivial to be taken quite seriously by the authorities (though in practice puppet theater could be just as subject to restriction as the theater of human actors)","Rebecca_responses.txt")
