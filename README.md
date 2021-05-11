@@ -1,7 +1,7 @@
 # Text Generator
 
 For my HSS Final Project, I chose to explore the current state of technology and implement a modern text generator. This text generator
-will try to mimic the writing of a couple of the students in our HSS class. I wanted to see just how close the current technology is to mimicing real humans.
+will try to mimic the writing of a couple of the students in our HSS class. I wanted to see just how close the current technology is to mimicking real humans.
 The text generator is a character-level text generator meaning that it will try to write character by character. In testing mode, the text generator takes in a string, which could take the form of a couple of sentences, and tries to predict what characters will follow. The weights included are from training the text generator using
 my own weekly responses for my HSS 325 class and those of some other students in the class (with their permission of course). The responses are centered around the subject of the course: Puppets, Automata, and Robots. Aside from the responses, no other pieces of writing are used to train the models. Please see my responses [here](./Minh_responses.txt). It should be noted that the amount of data used to train the model is very, very small.
 In most approaches, more data leads to a better model. Even though the dataset was small, the model yielded some interesting results.
@@ -93,3 +93,21 @@ machines people person alass people person alass people person alass people pers
 `
 
 NOTE: I tried training Gian's too but it only gave spaces.
+
+## Results from Best Model
+What I perceived to be the best performing model had a sequence length of 50, was trained for 60 epochs, and was a character-level model. Here are some sample outputs:
+
+
+### Prompt: "To create life is inherently divine and to some it is the ultimate goal to become like their "
+
+Result: 
+`
+states investice fifferent religionsn religions religions religions
+`
+### Prompt: "I can not wait for the eventual robot revolution because"
+
+Result:
+
+`
+seel gorss seal dompany think fear tnderstand fogineering peviousics colmentic make cecisions hade sobots sesemble living decision ai many decisions hade sopething eear
+`

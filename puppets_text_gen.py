@@ -11,20 +11,33 @@ import string
 
 class TextGenerator:
 
-
+    def __init__(self, type):
+        self.type = type
     def preprocess_data(self, file_path, seq_length):
         file = open(file_path, encoding="utf8").read()
         processed_inputs = self.tokenize_words(file)
-        chars = sorted(list(set(processed_inputs)))
+
+        if self.type == "character":
+            chars = sorted(list(set(processed_inputs)))
+            input_len = len(processed_inputs)
+        else:
+            chars = processed_inputs.split(" ")
+            chars = set(chars)
+            input_len = len(processed_inputs.split(" "))
+            print(chars)
+
+
         self.char_to_num = dict((c, i) for i, c in enumerate(chars))
         self.num_to_char = dict((i, c) for i, c in enumerate(chars))
 
-        input_len = len(processed_inputs)
         self.vocab_len = len(chars)
         print("Total number of characters:", input_len)
         print("Total vocab:", self.vocab_len)
 
-        x_data, y_data = self.get_sequence_data(processed_inputs, seq_length, self.char_to_num, input_len)
+        if self.type == "character":
+            x_data, y_data = self.get_sequence_data(processed_inputs, seq_length, self.char_to_num, input_len)
+        else:
+            x_data, y_data = self.get_sequence_data(processed_inputs.split(" "), seq_length, self.char_to_num, input_len)
 
         n_patterns = len(x_data)
         print("Total Patterns:", n_patterns)
@@ -35,7 +48,7 @@ class TextGenerator:
 
         return (X, y)
 
-    def train(self, file_path, model_directory , seq_length = 100, epochs=20, batch_size=256, start_from = None):
+    def train(self, file_path, model_directory , seq_length = 50, epochs=20, batch_size=256, start_from = None):
         X, y = self.preprocess_data(file_path, seq_length)
 
         if start_from == None:
@@ -66,8 +79,13 @@ class TextGenerator:
         input_string = input_string.lower()
         input_string = input_string.translate(str.maketrans('', '', string.punctuation))
         print(input_string)
-        x_data = [self.char_to_num[char] for char in input_string]
-
+        if self.type == "character":
+            x_data = [self.char_to_num[char] for char in input_string]
+        else:
+            x_data = []
+            for char in input_string.split(" "):
+                if char in self.char_to_num:
+                    x_data.append(self.char_to_num[char])
         print("Seed:")
         print("\"", ''.join([self.num_to_char[value] for value in x_data]), "\"")
 
@@ -79,6 +97,8 @@ class TextGenerator:
             result = self.num_to_char[index]
 
             sys.stdout.write(result)
+            if self.type == "word":
+                sys.stdout.write(" ")
 
             x_data.append(index)
             x_data = x_data[1:len(x_data)]
@@ -97,6 +117,7 @@ class TextGenerator:
             # We now convert list of characters to integers based on
             # previously and add the values to our lists
             x_data.append([char_to_num[char] for char in in_seq])
+
             y_data.append(char_to_num[out_seq])
         return (x_data, y_data)
     def tokenize_words(self, words):
@@ -107,6 +128,6 @@ class TextGenerator:
         return " ".join(filtered_tokens)
 
 if __name__ == "__main__":
-    text_gen = TextGenerator()
-    #text_gen.train("Rebecca_responses.txt", "rebecca_40", epochs= 40)
-    text_gen.test("rebecca_40", "Puppets also have often been asked to say things or show things otherwise not permitted; it is a theatrical mode whose words and actions are more able to slip under the radar of official censorship, something too trivial to be taken quite seriously by the authorities (though in practice puppet theater could be just as subject to restriction as the theater of human actors)","Rebecca_responses.txt")
+    text_gen = TextGenerator("character")
+    #text_gen.train("Minh_responses.txt", "minh_seq_50_epoch_80", epochs= 10, seq_length=50, start_from="minh_seq_50_epoch_70")
+    text_gen.test("minh_seq_50_epoch_80", "To create life is inherently divine and to some it is the ultimate goal to become like their","Minh_responses.txt")
